@@ -1,0 +1,458 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema",
+	"title": "YARRML",
+	"type": "object",
+	"allOf": [{ "$ref": "#/definitions/IDocument" }],
+	"definitions": {
+		"TermType": { "type": "string", "enum": ["iri", "blank", "literal"] },
+		"IDocument": {
+			"type": "object",
+			"properties": {
+				"authors": { "$ref": "#/definitions/IDocumentKeyAuthors" },
+				"base": { "$ref": "#/definitions/IDocumentKeyBase" },
+				"external": {
+					"type": "object",
+					"title": "References that do not refer to data in a data source."
+				},
+				"mappings": { "$ref": "#/definitions/IDocumentMappings" },
+				"prefixes": { "$ref": "#/definitions/IDocumentPrefixes" },
+				"sources": { "$ref": "#/definitions/IDocumentSources" },
+				"targets": { "$ref": "#/definitions/IDocumentTargets" },
+				"m": { "$ref": "#/definitions/IDocument/properties/mappings" },
+				"mapping": { "$ref": "#/definitions/IDocument/properties/mappings" },
+				"s": { "$ref": "#/definitions/IDocument/properties/sources" },
+				"source": { "$ref": "#/definitions/IDocument/properties/sources" },
+				"t": { "$ref": "#/definitions/IDocument/properties/targets" },
+				"target": { "$ref": "#/definitions/IDocument/properties/targets" }
+			}
+		},
+		"IDocumentMappings": {
+			"type": "object",
+			"title": "A mapping. Each mapping is added to this collection via key-value pair. The key is unique for each mapping. The value is collection containing rules to generate the subjects, predicates, and objects.",
+			"description": "https://rml.io/yarrrml/spec/#mappings",
+			"patternProperties": {
+				"^\\S+$": { "anyOf": [{ "$ref": "#/definitions/Mapping" }] }
+			}
+		},
+		"IDocumentTargets": {
+			"type": "object",
+			"description": "https://rml.io/yarrrml/spec/#targets",
+			"patternProperties": {
+				"^\\S+$": {
+					"anyOf": [{ "$ref": "#/definitions/TargetAbbr" }, { "$ref": "#/definitions/TargetCx" }]
+				}
+			}
+		},
+		"IDocumentSources": {
+			"type": "object",
+			"title": "Data sources. Each source is added to this collection via a key-value pair. The key has to be unique for every source.",
+			"description": "https://rml.io/yarrrml/spec/#data-sources",
+			"patternProperties": {
+				"^\\S+$": {
+					"anyOf": [{ "$ref": "#/definitions/SourceCx" }, { "$ref": "#/definitions/SourceAbbr" }]
+				}
+			}
+		},
+		"IDocumentKeyAuthors": {
+			"title": "The authors of the YARRRML rules.",
+			"description": "https://rml.io/yarrrml/spec/#authors",
+			"oneOf": [
+				{ "$ref": "#/definitions/Author" },
+				{ "type": "array", "items": { "$ref": "#/definitions/Author" } }
+			]
+		},
+		"IDocumentKeyBase": {
+			"type": "string",
+			"format": "uri",
+			"title": "Base URI, used for the creation of the IRIs of the term maps and sources of the [R2]RML rules.",
+			"description": "https://rml.io/yarrrml/spec/#base-iri"
+		},
+		"IDocumentPrefixes": {
+			"type": "object",
+			"title": "Custom namespace prefixes. All of RDFa's prefixes are predefined.",
+			"description": "https://rml.io/yarrrml/spec/#prefixes-and-namespaces",
+			"patternProperties": { "^\\S+$": { "type": "string", "format": "uri" } }
+		},
+		"Mapping": {
+			"type": "object",
+			"properties": {
+				"subjects": {
+					"anyOf": [
+						{ "type": "string" },
+						{ "$ref": "#/definitions/SubjectCx" },
+						{
+							"type": "array",
+							"items": {
+								"anyOf": [{ "type": "string" }, { "$ref": "#/definitions/SubjectCx" }]
+							}
+						}
+					]
+				},
+				"sources": {
+					"anyOf": [
+						{ "$ref": "#/definitions/SourceCx" },
+						{ "$ref": "#/definitions/SourceAbbr" },
+						{ "type": "string", "description": "Key of #/sources" },
+						{
+							"type": "array",
+							"items": {
+								"anyOf": [
+									{ "$ref": "#/definitions/SourceCx" },
+									{ "$ref": "#/definitions/SourceAbbr" },
+									{ "type": "string", "description": "Key of #/sources" }
+								]
+							}
+						}
+					]
+				},
+				"predicateobjects": {
+					"title": "Generates combinations of predicates and objects",
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{ "$ref": "#/definitions/PredObjCx" },
+							{ "$ref": "#/definitions/PredObjAbbr" },
+							{
+								"type": "array",
+								"items": {
+									"anyOf": [
+										{ "$ref": "#/definitions/PredObjCx" },
+										{ "$ref": "#/definitions/PredObjAbbr" }
+									]
+								}
+							}
+						]
+					}
+				},
+				"graphs": {
+					"anyOf": [
+						{ "type": "string" },
+						{ "$ref": "#/definitions/Graph" },
+						{
+							"type": "array",
+							"items": {
+								"anyOf": [{ "type": "string" }, { "$ref": "#/definitions/Graph" }]
+							}
+						}
+					]
+				},
+				"source": { "$ref": "#/definitions/Mapping/properties/sources" },
+				"subject": { "$ref": "#/definitions/Mapping/properties/subjects" },
+				"s": { "$ref": "#/definitions/Mapping/properties/subjects" },
+				"predicateobject": {
+					"$ref": "#/definitions/Mapping/properties/predicateobjects"
+				},
+				"po": { "$ref": "#/definitions/Mapping/properties/predicateobjects" },
+				"graph": { "$ref": "#/definitions/Mapping/properties/graphs" },
+				"g": { "$ref": "#/definitions/Mapping/properties/graphs" }
+			}
+		},
+		"PredObjCx": {
+			"type": "object",
+			"properties": {
+				"type": { "$ref": "#/definitions/TermType" },
+				"predicates": {
+					"anyOf": [
+						{ "type": "string" },
+						{ "$ref": "#/definitions/Predicate" },
+						{
+							"type": "array",
+							"items": {
+								"anyOf": [{ "type": "string" }, { "$ref": "#/definitions/Predicate" }]
+							}
+						}
+					]
+				},
+				"objects": {
+					"anyOf": [
+						{ "type": "string" },
+						{ "$ref": "#/definitions/Object" },
+						{
+							"type": "array",
+							"items": {
+								"anyOf": [
+									{ "type": "string" },
+									{ "$ref": "#/definitions/Object" },
+									{ "type": "array" }
+								]
+							}
+						}
+					]
+				},
+				"graphs": {
+					"anyOf": [
+						{ "type": "string" },
+						{ "$ref": "#/definitions/Graph" },
+						{
+							"type": "array",
+							"items": {
+								"anyOf": [{ "type": "string" }, { "$ref": "#/definitions/Graph" }]
+							}
+						}
+					]
+				},
+				"inversepredicates": {
+					"type": "string",
+					"title": "Inverse predicate, only valid when the object is an IRI or blank node."
+				},
+				"conditions": { "type": "object" },
+				"condition": {
+					"$ref": "#/definitions/PredObjCx/properties/conditions"
+				},
+				"c": { "$ref": "#/definitions/PredObjCx/properties/conditions" },
+				"p": { "$ref": "#/definitions/PredObjCx/properties/predicates" },
+				"predicate": {
+					"$ref": "#/definitions/PredObjCx/properties/predicates"
+				},
+				"g": { "$ref": "#/definitions/PredObjCx/properties/graphs" },
+				"graph": { "$ref": "#/definitions/PredObjCx/properties/graphs" },
+				"o": { "$ref": "#/definitions/PredObjCx/properties/objects" },
+				"object": { "$ref": "#/definitions/PredObjCx/properties/objects" },
+				"inversepredicate": {
+					"$ref": "#/definitions/PredObjCx/properties/inversepredicates"
+				},
+				"iv": { "$ref": "#/definitions/PredObjCx/properties/inversepredicates" }
+			}
+		},
+		"PredObjAbbr": {
+			"type": "array",
+			"minItems": 2,
+			"maxItems": 3
+		},
+		"Predicate": {
+			"type": "object",
+			"properties": {
+				"t": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"target": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"targets": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"v": { "$ref": "#/definitions/Predicate/properties/value" },
+				"value": { "type": "string" }
+			}
+		},
+		"Graph": {
+			"type": "object",
+			"properties": {
+				"t": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"target": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"targets": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"v": { "$ref": "#/definitions/Graph/properties/value" },
+				"value": { "type": "string" }
+			}
+		},
+		"Object": {
+			"type": "object",
+			"properties": {
+				"datatype": { "type": "string" },
+				"lang": { "type": "string" },
+				"type": { "$ref": "#/definitions/TermType" },
+				"t": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"target": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"targets": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"v": { "$ref": "#/definitions/Object/properties/value" },
+				"value": { "type": "string" }
+			}
+		},
+		"Author": {
+			"anyOf": [
+				{
+					"type": "object",
+					"properties": {
+						"name": { "type": "string" },
+						"email": { "type": "string", "format": "email" },
+						"website": { "type": "string", "format": "uri" }
+					}
+				},
+				{
+					"type": "string",
+					"title": "Name <email> (website)",
+					"pattern": "^[^<(]+( <\\S+>)?( \\(\\S+\\))?$"
+				},
+				{ "type": "string", "title": "WebID", "format": "uri" }
+			]
+		},
+		"SourceAbbr": {
+			"type": "array",
+			"minItems": 1,
+			"maxItems": 2,
+			"items": [
+				{ "type": "string", "title": "Access" },
+				{
+					"$ref": "#/definitions/SourceCx/properties/iterator",
+					"title": "Iterator"
+				}
+			]
+		},
+		"SourceCx": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string",
+					"enum": [
+						"oracle",
+						"mysql",
+						"hsql",
+						"postgresql",
+						"db2",
+						"informix",
+						"ingres",
+						"sapase",
+						"sapsqlanywhere",
+						"firebird",
+						"mssqlserver",
+						"virtuoso",
+						"wot",
+						"sparql",
+						"localfile",
+						"remotefile"
+					]
+				},
+				"access": { "type": "string" },
+				"queryFormulation": {
+					"type": "string",
+					"enum": [
+						"db2",
+						"firebird",
+						"hsql",
+						"informix",
+						"ingres",
+						"mssql",
+						"mysql",
+						"oracle",
+						"postgresql",
+						"progress",
+						"sparql11",
+						"sql2008",
+						"sql2016",
+						"sybasease",
+						"sybasesqlanywhere",
+						"virtuoso"
+					]
+				},
+				"query": { "type": "string" },
+				"referenceFormulation": {
+					"type": "string",
+					"enum": ["csv", "jsonpath", "xpath", "xquery", "css3"]
+				},
+				"iterator": { "type": "string" },
+				"delimiter": { "type": "string", "default": "," },
+				"encoding": { "type": "string", "default": "utf-8" },
+				"credentials": {
+					"type": "object",
+					"properties": {
+						"username": { "type": "string" },
+						"password": { "type": "string" }
+					},
+					"required": ["username", "password"]
+				},
+				"contentType": { "type": "string", "pattern": "\\w+/[-+.\\w]+" },
+				"operationType": { "type": "string", "enum": ["read", "write"] },
+				"security": {
+					"anyOf": [
+						{ "$ref": "#/definitions/SecurityCx" },
+						{ "const": "none" },
+						{
+							"type": "array",
+							"items": { "$ref": "#/definitions/SecurityCx" }
+						}
+					]
+				}
+			}
+		},
+		"SecurityCx": {
+			"type": "object",
+			"properties": {
+				"type": { "enum": ["apikey", "none"] },
+				"in": { "type": "string" },
+				"name": { "type": "string" },
+				"value": { "type": "string" }
+			}
+		},
+		"TargetAbbr": {
+			"oneOf": [
+				{
+					"type": "string"
+				},
+				{
+					"type": "array",
+					"minLength": 1,
+					"maxLength": 3,
+					"items": [
+						{ "type": "string" },
+						{ "$ref": "#/definitions/TargetCx/properties/serialization" },
+						{ "$ref": "#/definitions/TargetCx/properties/compression" }
+					]
+				}
+			]
+		},
+		"TargetCx": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string",
+					"enum": ["sparql", "localfile", "sd", "void", "dcat"]
+				},
+				"access": { "type": "string" },
+				"serialization": {
+					"type": "string",
+					"default": "nquads",
+					"enum": [
+						"jsonld",
+						"n3",
+						"ntriples",
+						"nquads",
+						"ldpatch",
+						"microdata",
+						"owlxml",
+						"owlfunctional",
+						"owlmanchester",
+						"powder",
+						"powder-s",
+						"prov-n",
+						"prov-xml",
+						"rdfa",
+						"rdfjson",
+						"rdfxml",
+						"rifxml",
+						"sparqlxml",
+						"sparqljson",
+						"sparqlcsv",
+						"sparqltsv",
+						"turtle",
+						"trig"
+					]
+				},
+				"compression": {
+					"type": "string",
+					"default": null,
+					"enum": ["gzip", "zip", "targzip", "tarxz"]
+				}
+			}
+		},
+		"SubjectCx": {
+			"type": "object",
+			"properties": {
+				"value": { "type": "string" },
+				"v": { "$ref": "#/definitions/SubjectCx/properties/value" },
+				"targets": {
+					"anyOf": [
+						{ "$ref": "#/definitions/TargetCx" },
+						{ "$ref": "#/definitions/TargetAbbr" },
+						{ "type": "string", "title": "Key from `#/targets:`" },
+						{
+							"type": "array",
+							"items": {
+								"anyOf": [
+									{ "$ref": "#/definitions/TargetCx" },
+									{ "$ref": "#/definitions/TargetAbbr" },
+									{ "type": "string", "title": "Key from `#/targets:`" }
+								]
+							}
+						}
+					]
+				},
+				"t": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"target": { "$ref": "#/definitions/SubjectCx/properties/targets" }
+			}
+		}
+	}
+}
