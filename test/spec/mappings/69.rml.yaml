@@ -1,0 +1,7 @@
+mappings:
+  work:
+    predicateobjects:
+      - predicates: ex:createdBy
+        inversepredicates: ex:created
+        objects: $(foafprofile)
+        type: iri

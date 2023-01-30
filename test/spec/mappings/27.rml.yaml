@@ -1,0 +1,4 @@
+mapping:
+  person:
+    sources:
+      - [data/person.json~jsonpath, $]

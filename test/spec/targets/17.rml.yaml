@@ -1,0 +1,6 @@
+targets:
+  person-target:
+    access: data/dump.ttl.gz
+    type: void
+    serialization: turtle
+    compression: gzip

@@ -1,0 +1,12 @@
+targets:
+  person-target:
+    access: data/dump.jsonld.gz
+    type: dcat
+    serialization: jsonld
+    compression: gzip
+
+mapping:
+  person:
+    subjects:
+      - value: "http://example.org/{id}"
+        targets: person-target

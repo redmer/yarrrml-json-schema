@@ -1,0 +1,9 @@
+mappings:
+  person:
+    predicateobjects:
+      - predicates: foaf:name
+        objects:
+          - value: $(firstname)
+            language: en
+          - value: $(lastname)
+            language: nl

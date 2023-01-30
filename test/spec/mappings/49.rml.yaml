@@ -1,0 +1,18 @@
+targets:
+  person-target1:
+    access: data/dump.jsonld.gz
+    type: dcat
+    serialization: jsonld
+    compression: gzip
+  person-target2:
+    access: data/dump2.rdf
+    type: void
+    serialization: rdfxml
+
+mapping:
+  person:
+    subjects:
+      - value: "http://example.org/{id}"
+        targets:
+          - person-target1
+          - person-target2

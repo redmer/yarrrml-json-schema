@@ -1,0 +1,6 @@
+mappings:
+  person:
+    subjects: http://example.org/$(id)
+    po:
+      - [ex:name, John]
+      - [ex:firstName, $(_name)]

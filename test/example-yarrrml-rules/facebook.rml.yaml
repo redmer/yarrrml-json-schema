@@ -1,0 +1,43 @@
+prefixes:
+  cocacola-fb: http://coca-cola.com/facebook/
+  emit: http://coca-cola.com/emit/
+  prov-said: http://semweb.datasciencelab.be/ns/prov-said/
+  ov: http://open.vocab.org/terms/
+  tsioc: http://rdfs.org/sioc/types#
+  fabio: http://purl.org/spar/fabio/
+
+base: http://example.com/base#
+
+sources:
+  api:
+    access: data.json
+    referenceFormulation: jsonpath
+    iterator: "$.data[*]"
+
+mappings:
+  facebook_post:
+    source:
+      - api
+    subject: cocacola-fb:$(id)
+    predicateobjects:
+      - [a, [prov:Entity, ov:MicroblogPost, schema:SocialMediaPosting, tsioc:MicroblogPost]]
+      - [[prov:label, schema:articleBody], $(message)]
+      - [schema:mainEntityOfPage, $(permalink_url), schema:URL]
+      - [prov:wasAttributedTo, http://coca-cola.com/#me~iri]
+      - predicate: prov:wasGeneratedBy
+        object:
+          mapping: emit
+          condition:
+            function: equal
+            parameters:
+              - [str1, $(id)]
+              - [str2, $(id)]
+  emit:
+    source:
+      - api
+    subject: emit:$(id)
+    predicateobjects:
+      - [a, prov:Activity]
+      - [prov:type, prov-said:EmitMessage~iri]
+      - [prov:wasStartedBy, http://coca-cola.com/#me~iri]
+      - [[prov:startedAtTime, prov:endedAtTime], $(created_time)]

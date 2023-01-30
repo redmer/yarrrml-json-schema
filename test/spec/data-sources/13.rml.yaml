@@ -1,0 +1,2 @@
+sources:
+  person-source: [data/person.json~jsonpath, $]

@@ -1,0 +1,10 @@
+mappings:
+  person:
+    subjects: http://example.com/{ID}
+    condition:
+      function: ex:isSet
+      parameters:
+        - [ex:input, $(ID)]
+    predicateobjects:
+      - predicates: foaf:firstName
+        objects: $(firstname)

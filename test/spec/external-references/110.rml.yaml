@@ -1,0 +1,9 @@
+external:
+  name: John
+
+mappings:
+  person:
+    subjects: http://example.org/$(id)
+    po:
+      - [ex:name, $(_name)]
+      - [ex:firstName, $(\_name)]

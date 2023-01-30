@@ -1,0 +1,9 @@
+mappings:
+  person:
+    predicateobjects:
+      - predicates: foaf:firstName
+        objects: $(firstname)
+        condition:
+          function: ex:isValid
+          parameters:
+            - [ex:input, $(firstname)]

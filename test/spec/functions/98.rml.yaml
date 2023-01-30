@@ -1,0 +1,13 @@
+mappings:
+  person:
+    predicateobjects:
+      - predicates: schema:name
+        objects:
+          - function: ex:escape
+            parameters:
+              - parameter: ex:valueParameter
+                value:
+                  function: ex:toUpperCase
+                  parameters:
+                    - [ex:valueParameter, $(name)]
+              - [ex:modeParameter, html]

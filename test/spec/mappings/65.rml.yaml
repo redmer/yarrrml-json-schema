@@ -1,0 +1,7 @@
+mappings:
+  person:
+    predicateobjects:
+      - predicates: foaf:knows
+        objects:
+          value: $(colleague)
+          type: iri

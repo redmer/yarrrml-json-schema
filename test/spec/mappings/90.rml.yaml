@@ -1,0 +1,6 @@
+mappings:
+  person:
+    predicateobjects:
+      - predicates: foaf:firstName
+        objects: $(firstname)
+        graphs: ex:myGraph

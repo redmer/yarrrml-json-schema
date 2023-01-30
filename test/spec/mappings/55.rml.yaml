@@ -1,0 +1,3 @@
+mappings:
+  person:
+    subjects: [http://wwww.example.com/person/$(id), http://www.test.com/$(firstname)]

@@ -1,0 +1,50 @@
+prefixes:
+  cocacola-tweet: http://coca-cola.com/facebook/
+  emit: http://coca-cola.com/emit/
+  prov-said: http://semweb.datasciencelab.be/ns/prov-said/
+  ov: http://open.vocab.org/terms/
+  tsioc: http://rdfs.org/sioc/types#
+  fabio: http://purl.org/spar/fabio/
+
+base: http://example.com/base#
+
+sources:
+  api:
+    access: data.json
+    referenceFormulation: jsonpath
+    iterator: "$.[*]"
+
+mappings:
+  tweet:
+    sources: api
+    s: cocacola-tweet:$(id)
+    po:
+      - [
+          a,
+          [
+            prov:Entity,
+            ov:MicroblogPost,
+            schema:SocialMediaPosting,
+            tsioc:MicroblogPost,
+            fabio:Tweet,
+          ],
+        ]
+      - [[prov:label, schema:articleBody], $(text)]
+      - [schema:mainEntityOfPage, https://twitter.com/CocaCola/status/$(id), schema:URL]
+      - [prov:wasAttributedTo, http://coca-cola.com/#me~iri]
+      - p: prov:wasGeneratedBy
+        o:
+          mapping: emit
+          condition:
+            function: equal
+            parameters:
+              - [str1, $(id)]
+              - [str2, $(id)]
+  emit:
+    sources: api
+    s: emit:$(id)
+    po:
+      - [a, prov:Activity]
+      - [prov:type, prov-said:EmitMessage~iri]
+      - [prov:wasStartedBy, http://coca-cola.com/#me~iri]
+      - [[prov:startedAtTime, prov:endedAtTime], $(created_at)]

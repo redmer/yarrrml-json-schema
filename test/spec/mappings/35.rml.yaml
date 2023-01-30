@@ -1,0 +1,15 @@
+sources:
+  person-source:
+    access: data/person.json
+    referenceFormulation: jsonpath
+    iterator: $
+  person-source2:
+    access: data/person2.json
+    referenceFormulation: jsonpath
+    iterator: "$.person[*]"
+
+mapping:
+  person:
+    sources:
+      - person-source
+      - person-source2

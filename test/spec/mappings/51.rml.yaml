@@ -1,0 +1,11 @@
+targets:
+  person-target:
+    access: data/dump1.nq
+
+mapping:
+  person:
+    subjects:
+      - value: "http://example.org/{id}"
+        targets:
+          - person-target
+          - access: data/dump2.nq

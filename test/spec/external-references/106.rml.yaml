@@ -1,0 +1,11 @@
+external:
+  name: John
+  city: Ghent
+
+mappings:
+  person:
+    subjects: http://example.org/$(id)
+    po:
+      - [ex:name, $(_name)]
+      - [ex:firstName, $(_name)]
+      - [ex:city, $(_city)]

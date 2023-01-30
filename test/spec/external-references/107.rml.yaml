@@ -1,0 +1,7 @@
+mappings:
+  person:
+    s: http://example.org/$(id)
+    po:
+      - [ex:name, John]
+      - [ex:firstName, John]
+      - [ex:city, Ghent]

@@ -1,0 +1,6 @@
+mapping:
+  person:
+    subjects:
+      - value: "http://example.org/{id}"
+        targets:
+          - ["data/dump.ttl.gz~void", "turtle", "gzip"]

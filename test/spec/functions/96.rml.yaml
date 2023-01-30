@@ -1,0 +1,9 @@
+mappings:
+  person:
+    predicateobjects:
+      - predicates: ex:age
+        objects:
+          - function: ex:double
+            parameters:
+              - [ex:input, $(age)]
+            datatype: xsd:integer

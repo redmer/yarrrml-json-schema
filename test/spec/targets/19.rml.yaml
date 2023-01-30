@@ -1,0 +1,2 @@
+targets:
+  person-target: [data/dump.ttl.gz~void, turtle, gzip]

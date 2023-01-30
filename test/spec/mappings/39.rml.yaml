@@ -1,0 +1,9 @@
+mapping:
+  person:
+    subjects:
+      - value: "http://example.org/{id}"
+        targets:
+          access: data/dump.ttl.gz
+          type: void
+          serialization: turtle
+          compression: gzip

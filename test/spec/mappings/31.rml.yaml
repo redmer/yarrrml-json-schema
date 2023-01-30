@@ -1,0 +1,5 @@
+mapping:
+  person:
+    sources:
+      - [data/person.json~jsonpath, $]
+      - [data/person2.json~jsonpath, "$.persons[*]"]

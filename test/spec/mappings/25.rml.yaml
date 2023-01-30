@@ -1,0 +1,6 @@
+mapping:
+  person:
+    sources:
+      access: data/person.json
+      referenceFormulation: jsonpath
+      iterator: $

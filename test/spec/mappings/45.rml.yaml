@@ -1,0 +1,7 @@
+mapping:
+  person:
+    subjects:
+      - value: "http://example.org/{id}"
+        targets:
+          - ["data/dump1.nq~void"]
+          - ["data/dump2.nq~void"]

@@ -1,0 +1,18 @@
+prefixes:
+  ex: "http://example.com/"
+  idlab-fn: "http://example.com/idlab/function/"
+
+mappings:
+  person:
+    sources:
+      - ["data.json~jsonpath", "$.persons[*]"]
+    s: http://example.com/$(firstname)
+    po:
+      - [a, foaf:Person]
+      - p: ex:city
+        o:
+          function: idlab-fn:dbpediaSpotlight
+          parameters:
+            - [idlab-fn:str, $(city)]
+            - [idlab-fn:endpoint, "https://api.dbpedia-spotlight.org/en"]
+          type: iri

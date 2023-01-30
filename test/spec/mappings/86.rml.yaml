@@ -1,0 +1,14 @@
+mappings:
+  person:
+    subjects: http://example.com/person/$(ID)
+    predicateobjects:
+      - predicates: foaf:worksFor
+        objects:
+          - mapping: project
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(projectID), s]
+                - [str2, $(ID), o]
+  project:
+    subjects: http://example.com/project/$(ID)
