@@ -1,0 +1,34 @@
+{
+	"name": "@rdmr-eu/yarrrml-json-schema",
+	"version": "1.0.0",
+	"description": "A JSON Schema to let editors (e.g., VS Code) syntax-check YARRRML files.",
+	"scripts": {
+		"format": "prettier --write .",
+		"test": "ajv validate --spec=draft7 --strict=false --errors=text -c ajv-formats -c ajv-formats-draft2019 -s src/yarrrml-json-schema.json -d 'test/**/*.rml.yaml'",
+		"lint": "prettier --check",
+		"postversion": "git push && git push --tags"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/redmer/yarrrml-json-schema.git"
+	},
+	"keywords": [
+		"json-schema",
+		"yaml",
+		"yarrrml",
+		"linked data",
+		"rml"
+	],
+	"author": "Redmer Kronemeijer (https://rdmr.eu)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/redmer/yarrrml-json-schema/issues"
+	},
+	"homepage": "https://github.com/redmer/yarrrml-json-schema#readme",
+	"devDependencies": {
+		"ajv-cli": "^5.0.0",
+		"ajv-formats": "^2.1.1",
+		"ajv-formats-draft2019": "^1.6.1",
+		"prettier": "2.8.3"
+	}
+}
