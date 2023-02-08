@@ -24,7 +24,7 @@ There are two ways to use this JSON Schema:
 - Add to the top of a YAML file:
 
   ```yaml
-  # yaml-language-server: $schema=<https://rdmr.eu/yarrrml-json-schema/yarrrml-json-schema.json>
+  # yaml-language-server: $schema=https://rdmr.eu/yarrrml-json-schema/yarrrml-json-schema.json
   ```
 
 ## Contributing
