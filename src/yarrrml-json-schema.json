@@ -298,6 +298,7 @@
 						"sapase",
 						"sapsqlanywhere",
 						"firebird",
+						"mssql",
 						"mssqlserver",
 						"virtuoso",
 						"wot",
