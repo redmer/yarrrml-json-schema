@@ -1,6 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema",
-	"title": "YARRML",
+	"$comment": "Abbreviations are kept next to their full equivalents, with a $ref to that equivalent.",
+	"title": "YARRML (RML in YAML)",
 	"type": "object",
 	"allOf": [{ "$ref": "#/definitions/IDocument" }],
 	"definitions": {
@@ -17,13 +18,13 @@
 				"mappings": { "$ref": "#/definitions/IDocumentMappings" },
 				"prefixes": { "$ref": "#/definitions/IDocumentPrefixes" },
 				"sources": { "$ref": "#/definitions/IDocumentSources" },
-				"targets": { "$ref": "#/definitions/IDocumentTargets" },
-				"m": { "$ref": "#/definitions/IDocument/properties/mappings" },
-				"mapping": { "$ref": "#/definitions/IDocument/properties/mappings" },
-				"s": { "$ref": "#/definitions/IDocument/properties/sources" },
-				"source": { "$ref": "#/definitions/IDocument/properties/sources" },
-				"t": { "$ref": "#/definitions/IDocument/properties/targets" },
-				"target": { "$ref": "#/definitions/IDocument/properties/targets" }
+				"targets": { "$ref": "#/definitions/IDocumentTargets" }
+			},
+			"patternProperties": {
+				"^(a|author)$": { "$ref": "#/definitions/IDocument/properties/authors" },
+				"^(m|mapping)$": { "$ref": "#/definitions/IDocument/properties/mappings" },
+				"^(s|source)$": { "$ref": "#/definitions/IDocument/properties/sources" },
+				"^(t|target)$": { "$ref": "#/definitions/IDocument/properties/targets" }
 			}
 		},
 		"IDocumentMappings": {
@@ -36,17 +37,16 @@
 		},
 		"IDocumentTargets": {
 			"type": "object",
-			"description": "https://rml.io/yarrrml/spec/#targets",
+			"title": "Output targets\n<https://rml.io/yarrrml/spec/#targets>",
 			"patternProperties": {
-				"^\\S+$": {
+				"^[A-Za-z_][A-Za-z0-9_-]*$": {
 					"anyOf": [{ "$ref": "#/definitions/TargetAbbr" }, { "$ref": "#/definitions/TargetCx" }]
 				}
 			}
 		},
 		"IDocumentSources": {
 			"type": "object",
-			"title": "Data sources. Each source is added to this collection via a key-value pair. The key has to be unique for every source.",
-			"description": "https://rml.io/yarrrml/spec/#data-sources",
+			"title": "Data sources",
 			"patternProperties": {
 				"^\\S+$": {
 					"anyOf": [{ "$ref": "#/definitions/SourceCx" }, { "$ref": "#/definitions/SourceAbbr" }]
@@ -135,20 +135,18 @@
 							}
 						}
 					]
-				},
-				"source": { "$ref": "#/definitions/Mapping/properties/sources" },
-				"subject": { "$ref": "#/definitions/Mapping/properties/subjects" },
-				"s": { "$ref": "#/definitions/Mapping/properties/subjects" },
-				"predicateobject": {
-					"$ref": "#/definitions/Mapping/properties/predicateobjects"
-				},
-				"po": { "$ref": "#/definitions/Mapping/properties/predicateobjects" },
-				"graph": { "$ref": "#/definitions/Mapping/properties/graphs" },
-				"g": { "$ref": "#/definitions/Mapping/properties/graphs" }
+				}
+			},
+			"patternProperties": {
+				"^(source)$": { "$ref": "#/definitions/Mapping/properties/sources" },
+				"^(s|subject)$": { "$ref": "#/definitions/Mapping/properties/subjects" },
+				"^(po|predicateobject)$": { "$ref": "#/definitions/Mapping/properties/predicateobjects" },
+				"^(g|graph)$": { "$ref": "#/definitions/Mapping/properties/graphs" }
 			}
 		},
 		"PredObjCx": {
 			"type": "object",
+			"description": "Predicate and object",
 			"properties": {
 				"type": { "$ref": "#/definitions/TermType" },
 				"predicates": {
@@ -195,23 +193,14 @@
 					"type": "string",
 					"title": "Inverse predicate, only valid when the object is an IRI or blank node."
 				},
-				"conditions": { "type": "object" },
-				"condition": {
-					"$ref": "#/definitions/PredObjCx/properties/conditions"
-				},
-				"c": { "$ref": "#/definitions/PredObjCx/properties/conditions" },
-				"p": { "$ref": "#/definitions/PredObjCx/properties/predicates" },
-				"predicate": {
-					"$ref": "#/definitions/PredObjCx/properties/predicates"
-				},
-				"g": { "$ref": "#/definitions/PredObjCx/properties/graphs" },
-				"graph": { "$ref": "#/definitions/PredObjCx/properties/graphs" },
-				"o": { "$ref": "#/definitions/PredObjCx/properties/objects" },
-				"object": { "$ref": "#/definitions/PredObjCx/properties/objects" },
-				"inversepredicate": {
-					"$ref": "#/definitions/PredObjCx/properties/inversepredicates"
-				},
-				"iv": { "$ref": "#/definitions/PredObjCx/properties/inversepredicates" }
+				"conditions": { "$ref": "#/definitions/Condition" }
+			},
+			"patternProperties": {
+				"^(c|condition)$": { "$ref": "#/definitions/PredObjCx/properties/conditions" },
+				"^(g|graph)$": { "$ref": "#/definitions/PredObjCx/properties/graphs" },
+				"^(iv|inversepredicate)$": { "$ref": "#/definitions/PredObjCx/properties/inversepredicates" },
+				"^(o|object)$": { "$ref": "#/definitions/PredObjCx/properties/objects" },
+				"^(p|predicate)$": { "$ref": "#/definitions/PredObjCx/properties/predicates" }
 			}
 		},
 		"PredObjAbbr": {
@@ -225,8 +214,14 @@
 				"t": { "$ref": "#/definitions/SubjectCx/properties/targets" },
 				"target": { "$ref": "#/definitions/SubjectCx/properties/targets" },
 				"targets": { "$ref": "#/definitions/SubjectCx/properties/targets" },
-				"v": { "$ref": "#/definitions/Predicate/properties/value" },
 				"value": { "type": "string" }
+			},
+			"patternProperties": {
+				"^(c|condition)$": { "$ref": "#/definitions/PredObjCx/properties/conditions" },
+				"^(g|graph)$": { "$ref": "#/definitions/PredObjCx/properties/graphs" },
+				"^(iv|inversepredicate)$": { "$ref": "#/definitions/PredObjCx/properties/inversepredicates" },
+				"^(v)$": { "$ref": "#/definitions/Predicate/properties/value" },
+				"^(p|predicate)$": { "$ref": "#/definitions/PredObjCx/properties/predicates" }
 			}
 		},
 		"Graph": {
@@ -245,11 +240,16 @@
 				"datatype": { "type": "string" },
 				"lang": { "type": "string" },
 				"type": { "$ref": "#/definitions/TermType" },
-				"t": { "$ref": "#/definitions/SubjectCx/properties/targets" },
-				"target": { "$ref": "#/definitions/SubjectCx/properties/targets" },
 				"targets": { "$ref": "#/definitions/SubjectCx/properties/targets" },
-				"v": { "$ref": "#/definitions/Object/properties/value" },
+				"function": { "$ref": "#/definitions/Function" },
+				"parameters": { "$ref": "#/definitions/Parameters" },
 				"value": { "type": "string" }
+			},
+			"patternProperties": {
+				"^(t|target)$": { "$ref": "#/definitions/Object/properties/targets" },
+				"^(f|fn)$": { "$ref": "#/definitions/Object/properties/function" },
+				"^(pms)$": { "$ref": "#/definitions/Object/properties/parameters" },
+				"^(v)$": { "$ref": "#/definitions/Object/properties/value" }
 			}
 		},
 		"Author": {
@@ -269,6 +269,52 @@
 				},
 				{ "type": "string", "title": "WebID", "format": "uri" }
 			]
+		},
+		"Function": {
+			"type": "string",
+			"title": "Function",
+			"description": "Execute a function. Default functions differ per implementation.\nRMLMapper: <https://rml.io/docs/rmlmapper/default-functions/>."
+		},
+		"Condition": {
+			"type": "object",
+			"title": "Condition",
+			"description": "Only generate a subject or predicate-object when a condition is fulfilled.",
+			"properties": {
+				"function": {"$ref": "#/definitions/Function" },
+				"parameters": {"$ref": "#/definitions/Parameters" }
+			},
+			"patternProperties": {
+				"^(pms)$": { "$ref": "#/definitions/Condition/properties/parameters" }
+			}
+		},
+		"Parameters": {
+			"type": "array",
+			"description": "Function parameter: pass values with a value IRI",
+			"items": {
+				"oneOf": [
+					{ "$ref": "#/definitions/ParametersCx" },
+					{ "$ref": "#/definitions/ParametersAbbr" }
+				]
+			}
+		},
+		"ParametersAbbr": {
+			"type": "array",
+			"minItems": 2,
+			"maxItems": 2,
+			"items": [
+				{ "$ref": "#/definitions/ParametersCx/properties/parameter" },
+				{ "$ref": "#/definitions/ParametersCx/properties/value" }
+			]
+		},
+		"ParametersCx": {
+			"type": "object",
+			"properties": {
+				"parameter": { "type": "string", "title": "Parameter name" },
+				"value": { "type": "string", "title": "Parameter value"}
+			},
+			"patternProperties": {
+				"^(pm)$": { "$ref": "#/definitions/ParametersCx/properties/parameter" }
+			}
 		},
 		"SourceAbbr": {
 			"type": "array",
@@ -332,6 +378,7 @@
 				"query": { "type": "string" },
 				"referenceFormulation": {
 					"type": "string",
+					"description": "The inner syntax of $(...).",
 					"enum": ["csv", "jsonpath", "xpath", "xquery", "css3"]
 				},
 				"iterator": { "type": "string" },
@@ -361,6 +408,8 @@
 		},
 		"SecurityCx": {
 			"type": "object",
+			"title": "Security",
+			"description": "How authentication should be performed againast a Web API or stream when accessing its data.",
 			"properties": {
 				"type": { "enum": ["apikey", "none"] },
 				"in": { "type": "string" },
@@ -378,7 +427,7 @@
 					"minLength": 1,
 					"maxLength": 3,
 					"items": [
-						{ "type": "string" },
+						{ "type": "string", "description": "access~type" },
 						{ "$ref": "#/definitions/TargetCx/properties/serialization" },
 						{ "$ref": "#/definitions/TargetCx/properties/compression" }
 					]
@@ -387,6 +436,8 @@
 		},
 		"TargetCx": {
 			"type": "object",
+			"title": "Logical target",
+			"description": "Describes how the generated triples are exported",
 			"properties": {
 				"type": {
 					"type": "string",
@@ -433,27 +484,30 @@
 			"type": "object",
 			"properties": {
 				"value": { "type": "string" },
-				"v": { "$ref": "#/definitions/SubjectCx/properties/value" },
-				"targets": {
-					"anyOf": [
-						{ "$ref": "#/definitions/TargetCx" },
-						{ "$ref": "#/definitions/TargetAbbr" },
-						{ "type": "string", "title": "Key from `#/targets:`" },
-						{
-							"type": "array",
-							"items": {
-								"anyOf": [
-									{ "$ref": "#/definitions/TargetCx" },
-									{ "$ref": "#/definitions/TargetAbbr" },
-									{ "type": "string", "title": "Key from `#/targets:`" }
-								]
-							}
-						}
-					]
-				},
-				"t": { "$ref": "#/definitions/SubjectCx/properties/targets" },
-				"target": { "$ref": "#/definitions/SubjectCx/properties/targets" }
+				"targets": { "$ref": "#/definitions/TargetInline" }
+			},
+			"patternProperties": {
+				"^(t|target)$": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"^(v)$": { "$ref": "#/definitions/SubjectCx/properties/value" }
 			}
+		},
+		"TargetInline": {
+			"title": "Target",
+			"anyOf": [
+				{ "$ref": "#/definitions/TargetCx" },
+				{ "$ref": "#/definitions/TargetAbbr" },
+				{ "type": "string", "title": "Key from `#/targets:`" },
+				{
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{ "$ref": "#/definitions/TargetCx" },
+							{ "$ref": "#/definitions/TargetAbbr" },
+							{ "type": "string", "title": "Key from `#/targets:`" }
+						]
+					}
+				}
+			]
 		}
 	}
 }
