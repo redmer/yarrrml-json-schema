@@ -13,7 +13,7 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: Install dependencies
-        run: node ci
+        run: npm ci
 
       - name: Formatting check
         run: npm run lint
@@ -28,7 +28,7 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: Install dependencies
-        run: node ci
+        run: npm ci
 
       - name: Formatting check
         run: npm test
