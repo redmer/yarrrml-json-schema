@@ -142,18 +142,14 @@
 		"SubjectAbbr": { "type": "string" },
 		"SubjectObj": {
 			"allOf": [
-				{ "$ref": "#/definitions/ValueOrFunction" },
+				{ "$ref": "#/definitions/FunctionParamsTargetsValue" },
 				{ "$ref": "#/definitions/SubjectObj_" }
 			]
 		},
 		"SubjectObj_": {
 			"type": "object",
 			"properties": {
-				"targets": { "$ref": "#/definitions/Targets1N" },
 				"type": { "$ref": "#/definitions/TermType" }
-			},
-			"patternProperties": {
-				"^(t|target)$": { "$ref": "#/definitions/SubjectObj_/properties/targets" }
 			}
 		},
 		"Mapping": {
@@ -261,21 +257,7 @@
 		},
 		"GraphsAbbr": { "type": "string" },
 
-		"GraphsObj": {
-			"oneOf": [{ "$ref": "#/definitions/ValueOrFunction" }, { "$ref": "#/definitions/GraphsObj_" }]
-		},
-		"GraphsObj_": {
-			"type": "object",
-			"additionalProperties": false,
-			"properties": {
-				"targets": { "$ref": "#/definitions/Targets1N" },
-				"value": { "type": "string" }
-			},
-			"patternProperties": {
-				"^(t|target)$": { "$ref": "#/definitions/GraphsObj_/properties/targets" },
-				"^(v)$": { "$ref": "#/definitions/GraphsObj_/properties/value" }
-			}
-		},
+		"GraphsObj": { "$ref": "#/definitions/FunctionParamsTargetsValue" },
 
 		"Object1N": {
 			"title": "Output triple objects",
@@ -308,7 +290,10 @@
 			]
 		},
 		"ObjectObj": {
-			"allOf": [{ "$ref": "#/definitions/ValueOrFunction" }, { "$ref": "#/definitions/ObjectObj_" }]
+			"allOf": [
+				{ "$ref": "#/definitions/FunctionParamsTargetsValue" },
+				{ "$ref": "#/definitions/ObjectObj_" }
+			]
 		},
 		"ObjectObj_": {
 			"type": "object",
@@ -316,26 +301,26 @@
 				"datatype": { "type": "string", "description": "Literal datatype" },
 				"language": { "$ref": "#/definitions/GraphsOpt" },
 				"type": { "$ref": "#/definitions/TermType" },
-				"targets": { "$ref": "#/definitions/SubjectObj_/properties/targets" },
 				"mapping": { "type": "string", "description": "Mapping reference" },
 				"condition": { "$ref": "#/definitions/Condition1N" }
 			},
 			"patternProperties": {
-				"^(t|target)$": { "$ref": "#/definitions/ObjectObj_/properties/targets" },
 				"^(lang)$": { "$ref": "#/definitions/ObjectObj_/properties/language" }
 			}
 		},
-		"ValueOrFunction": {
+		"FunctionParamsTargetsValue": {
 			"type": "object",
 			"properties": {
 				"function": { "$ref": "#/definitions/Function" },
 				"parameters": { "$ref": "#/definitions/Parameters1N" },
+				"targets": { "$ref": "#/definitions/Targets1N" },
 				"value": { "type": "string" }
 			},
 			"patternProperties": {
-				"^(f|fn)$": { "$ref": "#/definitions/ValueOrFunction/properties/function" },
-				"^(pms)$": { "$ref": "#/definitions/ValueOrFunction/properties/parameters" },
-				"^(v)$": { "$ref": "#/definitions/ValueOrFunction/properties/value" }
+				"^(f|fn)$": { "$ref": "#/definitions/FunctionParamsTargetsValue/properties/function" },
+				"^(pms)$": { "$ref": "#/definitions/FunctionParamsTargetsValue/properties/parameters" },
+				"^(t|target)$": { "$ref": "#/definitions/FunctionParamsTargetsValue/properties/targets" },
+				"^(v)$": { "$ref": "#/definitions/FunctionParamsTargetsValue/properties/value" }
 			}
 		},
 
@@ -412,7 +397,7 @@
 						{ "type": "string", "title": "Parameter value" },
 						{ "type": "boolean", "title": "Parameter value" },
 						{ "type": "number", "title": "Parameter value" },
-						{ "$ref": "#/definitions/ValueOrFunction" }
+						{ "$ref": "#/definitions/FunctionParamsTargetsValue" }
 					]
 				}
 			},
