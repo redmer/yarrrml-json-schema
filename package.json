@@ -5,7 +5,7 @@
 	"scripts": {
 		"format": "prettier --write .",
 		"test": "ajv validate --spec=draft7 --strict=false --errors=text --all-errors -c ajv-formats -c ajv-formats-draft2019 -s src/yarrrml-json-schema.json -d 'test/**/*.rml.yaml'",
-		"lint": "prettier --check",
+		"lint": "prettier --check src/*.json",
 		"postversion": "git push && git push --tags"
 	},
 	"repository": {
