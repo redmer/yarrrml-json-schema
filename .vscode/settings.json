@@ -1,4 +1,7 @@
 {
+	"editor.codeActionsOnSave": {
+		"source.sort.json": "never"
+	},
 	"yaml.schemas": {
 		"./src/yarrrml-json-schema.json": "*.rml.yaml"
 	}
