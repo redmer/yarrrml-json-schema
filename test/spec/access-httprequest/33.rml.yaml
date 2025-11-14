@@ -1,0 +1,20 @@
+targets:
+  lt_persons:
+    type: directhttprequest
+    access: "https://pod.playground.solidlab.be/user1/persons"
+    serialization: turtle
+    authentication: auth
+  lt_persons_acl:
+    type: linkedhttprequest
+    access: "https://pod.playground.solidlab.be/user1/persons"
+    rel: acl
+    serialization: turtle
+    authentication: auth
+
+authentications:
+  auth:
+    type: cssclientcredentials
+    email: user1@pod.playground.solidlab.be
+    password: user1
+    webId: "https://pod.playground.solidlab.be/user1/profile/card#me"
+    oidcIssuer: "https://pod.playground.solidlab.be/"

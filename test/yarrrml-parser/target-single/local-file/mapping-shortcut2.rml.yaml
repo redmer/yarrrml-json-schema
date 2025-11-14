@@ -4,7 +4,7 @@ sources:
     referenceFormulation: jsonpath
     iterator: "$.[*]"
 targets:
-  subject-target: ["/data/file.jsonld~dcat", "jsonld"]
+  subject-target: ["/data/file.jsonld", "jsonld"]
 mappings:
   person:
     sources: people-source

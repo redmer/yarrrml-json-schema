@@ -1,0 +1,32 @@
+# Different iterators, so different sources:
+sources:
+  create-source: [message.json~jsonpath, $.create.*]
+  update-source: [message.json~jsonpath, $.update.*]
+  delete-source: [message.json~jsonpath, $.delete.*]
+
+mappings:
+  ex1:
+    s: http://fruit.org/$(fruit)
+
+    po:
+      - [ex:colour, $(colour)]
+
+    changeDetection:
+      create:
+        explicit: true
+        mappingAdd:
+          sources: create-source
+        mappingRemove:
+          sources: []
+      update:
+        explicit: true
+        mappingAdd:
+          sources: update-source
+        mappingRemove:
+          sources: []
+      delete:
+        explicit: true
+        mappingAdd:
+          sources: delete-source
+        mappingRemove:
+          sources: []
