@@ -3,28 +3,28 @@
 	"$comment": "Abbreviations are kept next to their full equivalents, with a $ref to that equivalent.",
 	"title": "YARRML (RML in YAML)",
 	"type": "object",
-	"allOf": [{ "$ref": "#/$defs/IDocument" }],
-	"$defs": {
+	"allOf": [{ "$ref": "#/definitions/IDocument" }],
+	"definitions": {
 		"TermType": { "type": "string", "enum": ["iri", "blank", "literal"] },
 		"IDocument": {
 			"type": "object",
 			"properties": {
-				"authors": { "$ref": "#/$defs/IDocumentKeyAuthors" },
-				"base": { "$ref": "#/$defs/IDocumentKeyBase" },
+				"authors": { "$ref": "#/definitions/IDocumentKeyAuthors" },
+				"base": { "$ref": "#/definitions/Base" },
 				"external": {
 					"type": "object",
 					"title": "References that do not refer to data in a data source."
 				},
-				"mappings": { "$ref": "#/$defs/IDocumentMappings" },
-				"prefixes": { "$ref": "#/$defs/IDocumentPrefixes" },
-				"sources": { "$ref": "#/$defs/IDocumentSources" },
-				"targets": { "$ref": "#/$defs/IDocumentTargets" }
+				"mappings": { "$ref": "#/definitions/IDocumentMappings" },
+				"prefixes": { "$ref": "#/definitions/IDocumentPrefixes" },
+				"sources": { "$ref": "#/definitions/IDocumentSources" },
+				"targets": { "$ref": "#/definitions/IDocumentTargets" }
 			},
 			"patternProperties": {
-				"^(a|author)$": { "$ref": "#/$defs/IDocument/properties/authors" },
-				"^(m|mapping)$": { "$ref": "#/$defs/IDocument/properties/mappings" },
-				"^(s|source)$": { "$ref": "#/$defs/IDocument/properties/sources" },
-				"^(t|target)$": { "$ref": "#/$defs/IDocument/properties/targets" }
+				"^(a|author)$": { "$ref": "#/definitions/IDocument/properties/authors" },
+				"^(m|mapping)$": { "$ref": "#/definitions/IDocument/properties/mappings" },
+				"^(s|source)$": { "$ref": "#/definitions/IDocument/properties/sources" },
+				"^(t|target)$": { "$ref": "#/definitions/IDocument/properties/targets" }
 			}
 		},
 		"IDocumentMappings": {
@@ -32,7 +32,7 @@
 			"title": "A mapping. Each mapping is added to this collection via key-value pair. The key is unique for each mapping. The value is collection containing rules to generate the subjects, predicates, and objects.",
 			"description": "https://rml.io/yarrrml/spec/#mappings",
 			"patternProperties": {
-				"^\\S+$": { "anyOf": [{ "$ref": "#/$defs/Mapping" }] }
+				"^\\S+$": { "anyOf": [{ "$ref": "#/definitions/Mapping" }] }
 			}
 		},
 		"IDocumentTargets": {
@@ -40,7 +40,7 @@
 			"title": "Output targets\n<https://rml.io/yarrrml/spec/#targets>",
 			"patternProperties": {
 				"^[A-Za-z_][A-Za-z0-9_-]*$": {
-					"anyOf": [{ "$ref": "#/$defs/TargetAbbr" }, { "$ref": "#/$defs/TargetCx" }]
+					"anyOf": [{ "$ref": "#/definitions/TargetAbbr" }, { "$ref": "#/definitions/TargetCx" }]
 				}
 			}
 		},
@@ -49,7 +49,7 @@
 			"title": "Data sources",
 			"patternProperties": {
 				"^\\S+$": {
-					"anyOf": [{ "$ref": "#/$defs/SourceCx" }, { "$ref": "#/$defs/SourceAbbr" }]
+					"anyOf": [{ "$ref": "#/definitions/SourceCx" }, { "$ref": "#/definitions/SourceAbbr" }]
 				}
 			}
 		},
@@ -57,15 +57,15 @@
 			"title": "The authors of the YARRRML rules.",
 			"description": "https://rml.io/yarrrml/spec/#authors",
 			"oneOf": [
-				{ "$ref": "#/$defs/Author" },
-				{ "type": "array", "items": { "$ref": "#/$defs/Author" } }
+				{ "$ref": "#/definitions/Author" },
+				{ "type": "array", "items": { "$ref": "#/definitions/Author" } }
 			]
 		},
-		"IDocumentKeyBase": {
+		"Base": {
 			"type": "string",
 			"format": "uri",
-			"title": "Base URI, used for the creation of the IRIs of the term maps and sources of the [R2]RML rules.",
-			"description": "https://rml.io/yarrrml/spec/#base-iri"
+			"title": "Base URI",
+			"description": "Used for the creation of the IRIs of the term maps and sources of the [R2]RML rules."
 		},
 		"IDocumentPrefixes": {
 			"type": "object",
@@ -79,26 +79,26 @@
 				"subjects": {
 					"anyOf": [
 						{ "type": "string" },
-						{ "$ref": "#/$defs/SubjectCx" },
+						{ "$ref": "#/definitions/SubjectCx" },
 						{
 							"type": "array",
 							"items": {
-								"anyOf": [{ "type": "string" }, { "$ref": "#/$defs/SubjectCx" }]
+								"anyOf": [{ "type": "string" }, { "$ref": "#/definitions/SubjectCx" }]
 							}
 						}
 					]
 				},
 				"sources": {
 					"anyOf": [
-						{ "$ref": "#/$defs/SourceCx" },
-						{ "$ref": "#/$defs/SourceAbbr" },
+						{ "$ref": "#/definitions/SourceCx" },
+						{ "$ref": "#/definitions/SourceAbbr" },
 						{ "type": "string", "description": "Key of #/sources" },
 						{
 							"type": "array",
 							"items": {
 								"anyOf": [
-									{ "$ref": "#/$defs/SourceCx" },
-									{ "$ref": "#/$defs/SourceAbbr" },
+									{ "$ref": "#/definitions/SourceCx" },
+									{ "$ref": "#/definitions/SourceAbbr" },
 									{ "type": "string", "description": "Key of #/sources" }
 								]
 							}
@@ -110,12 +110,15 @@
 					"type": "array",
 					"items": {
 						"anyOf": [
-							{ "$ref": "#/$defs/PredObjCx" },
-							{ "$ref": "#/$defs/PredObjAbbr" },
+							{ "$ref": "#/definitions/PredObjCx" },
+							{ "$ref": "#/definitions/PredObjAbbr" },
 							{
 								"type": "array",
 								"items": {
-									"anyOf": [{ "$ref": "#/$defs/PredObjCx" }, { "$ref": "#/$defs/PredObjAbbr" }]
+									"anyOf": [
+										{ "$ref": "#/definitions/PredObjCx" },
+										{ "$ref": "#/definitions/PredObjAbbr" }
+									]
 								}
 							}
 						]
@@ -124,36 +127,36 @@
 				"graphs": {
 					"anyOf": [
 						{ "type": "string" },
-						{ "$ref": "#/$defs/Graph" },
+						{ "$ref": "#/definitions/Graph" },
 						{
 							"type": "array",
 							"items": {
-								"anyOf": [{ "type": "string" }, { "$ref": "#/$defs/Graph" }]
+								"anyOf": [{ "type": "string" }, { "$ref": "#/definitions/Graph" }]
 							}
 						}
 					]
 				}
 			},
 			"patternProperties": {
-				"^(source)$": { "$ref": "#/$defs/Mapping/properties/sources" },
-				"^(s|subject)$": { "$ref": "#/$defs/Mapping/properties/subjects" },
-				"^(po|predicateobject)$": { "$ref": "#/$defs/Mapping/properties/predicateobjects" },
-				"^(g|graph)$": { "$ref": "#/$defs/Mapping/properties/graphs" }
+				"^(source)$": { "$ref": "#/definitions/Mapping/properties/sources" },
+				"^(s|subject)$": { "$ref": "#/definitions/Mapping/properties/subjects" },
+				"^(po|predicateobject)$": { "$ref": "#/definitions/Mapping/properties/predicateobjects" },
+				"^(g|graph)$": { "$ref": "#/definitions/Mapping/properties/graphs" }
 			}
 		},
 		"PredObjCx": {
 			"type": "object",
 			"description": "Predicate and object",
 			"properties": {
-				"type": { "$ref": "#/$defs/TermType" },
+				"type": { "$ref": "#/definitions/TermType" },
 				"predicates": {
 					"anyOf": [
 						{ "type": "string" },
-						{ "$ref": "#/$defs/Predicate" },
+						{ "$ref": "#/definitions/Predicate" },
 						{
 							"type": "array",
 							"items": {
-								"anyOf": [{ "type": "string" }, { "$ref": "#/$defs/Predicate" }]
+								"anyOf": [{ "type": "string" }, { "$ref": "#/definitions/Predicate" }]
 							}
 						}
 					]
@@ -161,11 +164,15 @@
 				"objects": {
 					"anyOf": [
 						{ "type": "string" },
-						{ "$ref": "#/$defs/Object" },
+						{ "$ref": "#/definitions/Object" },
 						{
 							"type": "array",
 							"items": {
-								"anyOf": [{ "type": "string" }, { "$ref": "#/$defs/Object" }, { "type": "array" }]
+								"anyOf": [
+									{ "type": "string" },
+									{ "$ref": "#/definitions/Object" },
+									{ "type": "array" }
+								]
 							}
 						}
 					]
@@ -173,11 +180,11 @@
 				"graphs": {
 					"anyOf": [
 						{ "type": "string" },
-						{ "$ref": "#/$defs/Graph" },
+						{ "$ref": "#/definitions/Graph" },
 						{
 							"type": "array",
 							"items": {
-								"anyOf": [{ "type": "string" }, { "$ref": "#/$defs/Graph" }]
+								"anyOf": [{ "type": "string" }, { "$ref": "#/definitions/Graph" }]
 							}
 						}
 					]
@@ -186,16 +193,16 @@
 					"type": "string",
 					"title": "Inverse predicate, only valid when the object is an IRI or blank node."
 				},
-				"conditions": { "$ref": "#/$defs/Condition" }
+				"conditions": { "$ref": "#/definitions/Condition" }
 			},
 			"patternProperties": {
-				"^(c|condition)$": { "$ref": "#/$defs/PredObjCx/properties/conditions" },
-				"^(g|graph)$": { "$ref": "#/$defs/PredObjCx/properties/graphs" },
+				"^(c|condition)$": { "$ref": "#/definitions/PredObjCx/properties/conditions" },
+				"^(g|graph)$": { "$ref": "#/definitions/PredObjCx/properties/graphs" },
 				"^(iv|inversepredicate)$": {
-					"$ref": "#/$defs/PredObjCx/properties/inversepredicates"
+					"$ref": "#/definitions/PredObjCx/properties/inversepredicates"
 				},
-				"^(o|object)$": { "$ref": "#/$defs/PredObjCx/properties/objects" },
-				"^(p|predicate)$": { "$ref": "#/$defs/PredObjCx/properties/predicates" }
+				"^(o|object)$": { "$ref": "#/definitions/PredObjCx/properties/objects" },
+				"^(p|predicate)$": { "$ref": "#/definitions/PredObjCx/properties/predicates" }
 			}
 		},
 		"PredObjAbbr": {
@@ -206,28 +213,28 @@
 		"Predicate": {
 			"type": "object",
 			"properties": {
-				"t": { "$ref": "#/$defs/SubjectCx/properties/targets" },
-				"target": { "$ref": "#/$defs/SubjectCx/properties/targets" },
-				"targets": { "$ref": "#/$defs/SubjectCx/properties/targets" },
+				"t": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"target": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"targets": { "$ref": "#/definitions/SubjectCx/properties/targets" },
 				"value": { "type": "string" }
 			},
 			"patternProperties": {
-				"^(c|condition)$": { "$ref": "#/$defs/PredObjCx/properties/conditions" },
-				"^(g|graph)$": { "$ref": "#/$defs/PredObjCx/properties/graphs" },
+				"^(c|condition)$": { "$ref": "#/definitions/PredObjCx/properties/conditions" },
+				"^(g|graph)$": { "$ref": "#/definitions/PredObjCx/properties/graphs" },
 				"^(iv|inversepredicate)$": {
-					"$ref": "#/$defs/PredObjCx/properties/inversepredicates"
+					"$ref": "#/definitions/PredObjCx/properties/inversepredicates"
 				},
-				"^(v)$": { "$ref": "#/$defs/Predicate/properties/value" },
-				"^(p|predicate)$": { "$ref": "#/$defs/PredObjCx/properties/predicates" }
+				"^(v)$": { "$ref": "#/definitions/Predicate/properties/value" },
+				"^(p|predicate)$": { "$ref": "#/definitions/PredObjCx/properties/predicates" }
 			}
 		},
 		"Graph": {
 			"type": "object",
 			"properties": {
-				"t": { "$ref": "#/$defs/SubjectCx/properties/targets" },
-				"target": { "$ref": "#/$defs/SubjectCx/properties/targets" },
-				"targets": { "$ref": "#/$defs/SubjectCx/properties/targets" },
-				"v": { "$ref": "#/$defs/Graph/properties/value" },
+				"t": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"target": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"targets": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"v": { "$ref": "#/definitions/Graph/properties/value" },
 				"value": { "type": "string" }
 			}
 		},
@@ -236,17 +243,17 @@
 			"properties": {
 				"datatype": { "type": "string" },
 				"lang": { "type": "string" },
-				"type": { "$ref": "#/$defs/TermType" },
-				"targets": { "$ref": "#/$defs/SubjectCx/properties/targets" },
-				"function": { "$ref": "#/$defs/Function" },
-				"parameters": { "$ref": "#/$defs/Parameters" },
+				"type": { "$ref": "#/definitions/TermType" },
+				"targets": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"function": { "$ref": "#/definitions/Function" },
+				"parameters": { "$ref": "#/definitions/Parameters" },
 				"value": { "type": "string" }
 			},
 			"patternProperties": {
-				"^(t|target)$": { "$ref": "#/$defs/Object/properties/targets" },
-				"^(f|fn)$": { "$ref": "#/$defs/Object/properties/function" },
-				"^(pms)$": { "$ref": "#/$defs/Object/properties/parameters" },
-				"^(v)$": { "$ref": "#/$defs/Object/properties/value" }
+				"^(t|target)$": { "$ref": "#/definitions/Object/properties/targets" },
+				"^(f|fn)$": { "$ref": "#/definitions/Object/properties/function" },
+				"^(pms)$": { "$ref": "#/definitions/Object/properties/parameters" },
+				"^(v)$": { "$ref": "#/definitions/Object/properties/value" }
 			}
 		},
 		"Author": {
@@ -277,18 +284,21 @@
 			"title": "Condition",
 			"description": "Only generate a subject or predicate-object when a condition is fulfilled.",
 			"properties": {
-				"function": { "$ref": "#/$defs/Function" },
-				"parameters": { "$ref": "#/$defs/Parameters" }
+				"function": { "$ref": "#/definitions/Function" },
+				"parameters": { "$ref": "#/definitions/Parameters" }
 			},
 			"patternProperties": {
-				"^(pms)$": { "$ref": "#/$defs/Condition/properties/parameters" }
+				"^(pms)$": { "$ref": "#/definitions/Condition/properties/parameters" }
 			}
 		},
 		"Parameters": {
 			"type": "array",
 			"description": "Function parameter: pass values with a value IRI",
 			"items": {
-				"oneOf": [{ "$ref": "#/$defs/ParametersCx" }, { "$ref": "#/$defs/ParametersAbbr" }]
+				"oneOf": [
+					{ "$ref": "#/definitions/ParametersCx" },
+					{ "$ref": "#/definitions/ParametersAbbr" }
+				]
 			}
 		},
 		"ParametersAbbr": {
@@ -296,8 +306,8 @@
 			"minItems": 2,
 			"maxItems": 2,
 			"items": [
-				{ "$ref": "#/$defs/ParametersCx/properties/parameter" },
-				{ "$ref": "#/$defs/ParametersCx/properties/value" }
+				{ "$ref": "#/definitions/ParametersCx/properties/parameter" },
+				{ "$ref": "#/definitions/ParametersCx/properties/value" }
 			]
 		},
 		"ParametersCx": {
@@ -307,7 +317,7 @@
 				"value": { "type": "string", "title": "Parameter value" }
 			},
 			"patternProperties": {
-				"^(pm)$": { "$ref": "#/$defs/ParametersCx/properties/parameter" }
+				"^(pm)$": { "$ref": "#/definitions/ParametersCx/properties/parameter" }
 			}
 		},
 		"SourceAbbr": {
@@ -317,7 +327,7 @@
 			"items": [
 				{ "type": "string", "title": "Access" },
 				{
-					"$ref": "#/$defs/SourceCx/properties/iterator",
+					"$ref": "#/definitions/SourceCx/properties/iterator",
 					"title": "Iterator"
 				}
 			]
@@ -390,11 +400,11 @@
 				"operationType": { "type": "string", "enum": ["read", "write"] },
 				"security": {
 					"anyOf": [
-						{ "$ref": "#/$defs/SecurityCx" },
+						{ "$ref": "#/definitions/SecurityCx" },
 						{ "const": "none" },
 						{
 							"type": "array",
-							"items": { "$ref": "#/$defs/SecurityCx" }
+							"items": { "$ref": "#/definitions/SecurityCx" }
 						}
 					]
 				}
@@ -422,8 +432,8 @@
 					"maxLength": 3,
 					"items": [
 						{ "type": "string", "description": "access~type" },
-						{ "$ref": "#/$defs/TargetCx/properties/serialization" },
-						{ "$ref": "#/$defs/TargetCx/properties/compression" }
+						{ "$ref": "#/definitions/TargetCx/properties/serialization" },
+						{ "$ref": "#/definitions/TargetCx/properties/compression" }
 					]
 				}
 			]
@@ -478,25 +488,25 @@
 			"type": "object",
 			"properties": {
 				"value": { "type": "string" },
-				"targets": { "$ref": "#/$defs/TargetInline" }
+				"targets": { "$ref": "#/definitions/TargetInline" }
 			},
 			"patternProperties": {
-				"^(t|target)$": { "$ref": "#/$defs/SubjectCx/properties/targets" },
-				"^(v)$": { "$ref": "#/$defs/SubjectCx/properties/value" }
+				"^(t|target)$": { "$ref": "#/definitions/SubjectCx/properties/targets" },
+				"^(v)$": { "$ref": "#/definitions/SubjectCx/properties/value" }
 			}
 		},
 		"TargetInline": {
 			"title": "Target",
 			"anyOf": [
-				{ "$ref": "#/$defs/TargetCx" },
-				{ "$ref": "#/$defs/TargetAbbr" },
+				{ "$ref": "#/definitions/TargetCx" },
+				{ "$ref": "#/definitions/TargetAbbr" },
 				{ "type": "string", "title": "Key from `#/targets:`" },
 				{
 					"type": "array",
 					"items": {
 						"anyOf": [
-							{ "$ref": "#/$defs/TargetCx" },
-							{ "$ref": "#/$defs/TargetAbbr" },
+							{ "$ref": "#/definitions/TargetCx" },
+							{ "$ref": "#/definitions/TargetAbbr" },
 							{ "type": "string", "title": "Key from `#/targets:`" }
 						]
 					}
