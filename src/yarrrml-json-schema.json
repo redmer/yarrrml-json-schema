@@ -125,7 +125,7 @@
 			"title": "Additional prefixes and namespaces.",
 			"description": "All of RDFa's prefixes are predefined.\n<https://rml.io/yarrrml/spec/#prefixes-and-namespaces>",
 			"patternProperties": {
-				"^[A-Za-z]([A-Za-z0-9\\._-]*[A-Za-z0-9_])?$": { "type": "string", "format": "uri" }
+				"^([A-Za-z]([A-Za-z0-9\\._-]*[A-Za-z0-9_])?|)$": { "type": "string", "format": "uri" }
 			}
 		},
 		"Subject1N": {
@@ -272,6 +272,8 @@
 		"ObjectAbbr": {
 			"oneOf": [
 				{ "type": "string" },
+				{ "type": "number" },
+				{ "type": "boolean" },
 				{
 					"type": "array",
 					"minLength": 2,
