@@ -1,0 +1,18 @@
+sources:
+  ls_people:
+    access: people.csv
+    referenceFormulation: csv
+targets:
+  lt_persons:
+    source: ls_people
+    type: directhttprequest
+    access: "https://pod.playground.solidlab.be/user1/person/$(regnr)"
+    serialization: turtle
+mappings:
+  tm_people:
+    sources: ls_people
+    subjects:
+      - value: "http://example.org/$(regnr)"
+        targets: lt_persons
+    predicateobjects:
+      - [foaf:name, $(name)]

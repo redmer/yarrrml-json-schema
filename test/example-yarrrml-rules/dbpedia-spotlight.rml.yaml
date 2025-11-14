@@ -15,4 +15,6 @@ mappings:
           parameters:
             - [idlab-fn:str, $(city)]
             - [idlab-fn:endpoint, "https://api.dbpedia-spotlight.org/en"]
+            - parameter: ...
+              value: ...
           type: iri

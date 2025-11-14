@@ -4,7 +4,7 @@
 	"description": "A JSON Schema to let editors (e.g., VS Code) syntax-check YARRRML files.",
 	"scripts": {
 		"format": "prettier --write .",
-		"test": "ajv validate --spec=draft7 --strict=false --errors=text -c ajv-formats -c ajv-formats-draft2019 -s src/yarrrml-json-schema.json -d 'test/**/*.rml.yaml'",
+		"test": "ajv validate --spec=draft7 --strict=false --errors=text --all-errors -c ajv-formats -c ajv-formats-draft2019 -s src/yarrrml-json-schema.json -d 'test/**/*.rml.yaml'",
 		"lint": "prettier --check",
 		"postversion": "git push && git push --tags"
 	},

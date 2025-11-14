@@ -2,8 +2,6 @@ prefixes:
   crm: "http://www.cidoc-crm.org/cidoc-crm/"
   ex: http://example.org/
 
-base: http://example.org/
-
 sources:
   museum_source:
     access: src/test/resources/example5/museum.json

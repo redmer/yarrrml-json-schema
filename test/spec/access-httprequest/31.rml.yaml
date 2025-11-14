@@ -1,0 +1,10 @@
+sources:
+  ls_persons:
+    type: directhttprequest
+    access: "https://w3id.org/imec/rml/specs/rml-target/Friends.json"
+    methodName: GET
+    headers:
+      name: Accept
+      value: application/json
+    referenceFormulation: jsonpath
+    iterator: "$[*]"

@@ -1,0 +1,84 @@
+sources:
+  data-source-1: ["a data source~"]
+  data-source-2: ["another data source~"]
+
+targets:
+  # an "ordinary" target'
+  my-boring-target:
+    access: out.nq
+    type: localfile
+    serialization: nquads
+  # an LDES target
+  my-special-target:
+    access: out-ldes.nq
+    type: localfile
+    serialization: nquads
+    ldes: # LDES specific keys
+      id: https://my-ldes.org/the-one-and-only-ldes # The identifier of the Event Stream object.
+      timestampPath: dcterms:created # optional, default = dcterms:created.
+      versionOfPath: dcterms:isVersionOf # optional, default = dcterms: isVersionOf.
+      generateImmutableIRI: false # optional, default = false. If true, turn the member subject IRI into a unique one.
+
+mapping:
+  general-mapping:
+    # Here come some existing YARRRML rules
+    sources: data-source-1
+    graphs: ex:some-graph
+    subjects:
+      - value: ex:$(ObservationID)
+        targets: my-boring-target
+    po:
+      - [a, some-PO-mappings: fun!]
+
+    # Here's where the magic happens.
+    # Specify what to do when certain changes in data are detected.
+    # You can specify any combination of 'create', 'update' and 'delete' here
+    changeDetection:
+      # The operation to perform when change is detected.
+      # Can be `create`, `update` or `delete`.
+      # In this case the explicit creation of new data objects
+      create:
+        # The type of operation: is the create operation explicit or not?
+        # Optional.
+        #  `true` = explicitly advertised by the data source (default)
+        #  `false` = implicitly advertised by the data source
+        # See more explanation in section "Change detection".
+        explicit: true
+
+        # Optional. Things that will be *added to* the current mapping for this operation
+        mappingAdd:
+          sources: data-source-2
+          graphs: ex:a-second-graph
+          subjects:
+            - value: ex:$(Sensor)/$(ObservationID)
+              targets: my-special-target
+          po:
+            - [a, even more fun]
+
+        # Optional. Things that will be removed (ignored) from the original mapping
+        mappingRemove:
+          subjects: [] # The empty list means "all subjects"
+          graphs: []
+          po: []
+          sources: []
+
+      # Here's an "implicit update" example:
+      update:
+        explicit: false
+
+        # References to data attributes that trigger an update when they change.
+        watchedProperties: [$(temperature)]
+
+        mappingAdd:
+          # Add a graph to the original mapping.
+          graphs: ex:update
+
+          # Add a target to the original subjects.
+          subjects:
+            - targets: my-special-target
+
+        # Remove the original graphs at mapping level
+        mappingRemove:
+          graphs: []
+
+        # The "delete" operation works the same.

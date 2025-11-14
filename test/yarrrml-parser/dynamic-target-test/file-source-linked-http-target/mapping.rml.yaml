@@ -1,0 +1,31 @@
+sources:
+  people-source:
+    access: "/data/people.json"
+    referenceFormulation: jsonpath
+    iterator: "$.[*]"
+
+targets:
+  linked-http-target:
+    source: people-source
+    type: linkedhttprequest
+    access: https://electronics_user1/ceon/product-$(Part Number code)
+    rel: acl
+    serialization: turtle
+    authentication: auth
+
+authentications:
+  auth:
+    type: cssclientcredentials
+    email: electronics_user1@example.com
+    password: electronics_user1
+    oidcIssuer: https://css11/
+    webId: https://electronics_user1/profile/card#me
+
+mappings:
+  persons:
+    sources: people-source
+    subjects:
+      - value: http://example.org/$(id)
+        targets: linked-http-target
+    po:
+      - [foaf:name, $(name)]

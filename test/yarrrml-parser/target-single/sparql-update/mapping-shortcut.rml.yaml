@@ -4,7 +4,7 @@ sources:
     referenceFormulation: jsonpath
     iterator: "$.[*]"
 targets:
-  subject-target: ["http://example.com/sparql~sd"]
+  subject-target: ["http://example.com/sparql~sparql"]
 mappings:
   person:
     sources: people-source
