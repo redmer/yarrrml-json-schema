@@ -8,10 +8,11 @@ A JSON Schema to let code editors (e.g., VS Code) syntax-check YARRRML files.
 - [YARRRML](https://rml.io/yarrrml/spec/)
 - [VS Code support for JSON schema](https://code.visualstudio.com/docs/languages/json)
 - [VS Code support of JSON schemas for YAML files](https://github.com/redhat-developer/vscode-yaml#associating-schemas)
+- [VS Code YAML extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
 
 ## Usage
 
-There are two ways to use this JSON Schema:
+There are two ways to use this JSON Schema with the aforemention extension:
 
 - Add to Visual Studio Code's `settings.json`:
 
@@ -20,6 +21,8 @@ There are two ways to use this JSON Schema:
     	"https://rdmr.eu/yarrrml-json-schema/yarrrml-json-schema.json": "*.rml.yaml"
     }
   ```
+
+  This requires you to name your YARRRML mappings with a `.rml.yaml` file extension.
 
 - Add to the top of a YAML file:
 
