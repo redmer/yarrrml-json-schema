@@ -273,7 +273,6 @@
 			"oneOf": [
 				{ "type": "string" },
 				{ "type": "number" },
-				{ "type": "boolean" },
 				{
 					"type": "array",
 					"minLength": 2,
