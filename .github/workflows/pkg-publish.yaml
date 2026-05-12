@@ -6,9 +6,9 @@ on:
       - "v*"
 
 permissions:
-  id-token: write  # Required for OIDC
-  contents: read
-  
+  id-token: write # Required for OIDC
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,12 +21,12 @@ jobs:
         with:
           node-version: "24"
           registry-url: "https://registry.npmjs.org/"
-          package-manager-cache: false  # never use caching in release builds
+          package-manager-cache: false # never use caching in release builds
           scope: "@rdmr-eu"
 
       - run: npm publish --access public
 
       - name: Make release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         with:
           generate_release_notes: true
