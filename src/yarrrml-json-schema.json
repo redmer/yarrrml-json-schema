@@ -565,8 +565,7 @@
 			"oneOf": [
 				{
 					"type": "string",
-					"description": "Reference to a document-level target",
-					"pattern": "[^~]"
+					"description": "Reference to a document-level target"
 				},
 				{ "$ref": "#/definitions/TargetAbbr" },
 				{ "$ref": "#/definitions/TargetObj" }
