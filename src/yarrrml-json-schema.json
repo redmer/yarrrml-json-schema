@@ -632,7 +632,7 @@
 				},
 				"compression": {
 					"type": "string",
-					"default": null,
+					"description": "By default, no compression is applied",
 					"enum": ["gzip", "zip", "targzip", "tarxz"]
 				},
 				"ldes": {
