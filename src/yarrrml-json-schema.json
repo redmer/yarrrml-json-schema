@@ -275,8 +275,8 @@
 				{ "type": "number" },
 				{
 					"type": "array",
-					"minLength": 2,
-					"maxLength": 2,
+					"minItems": 2,
+					"maxItems": 2,
 					"items": [
 						{ "$ref": "#/definitions/PredicateObjectsObj/properties/objects" },
 						{
@@ -574,8 +574,8 @@
 		},
 		"TargetAbbr": {
 			"type": "array",
-			"minLength": 1,
-			"maxLength": 3,
+			"minItems": 1,
+			"maxItems": 3,
 			"items": [
 				{ "type": "string", "description": "access~type" },
 				{ "$ref": "#/definitions/TargetObj/properties/serialization" },
