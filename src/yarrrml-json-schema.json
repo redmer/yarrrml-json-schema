@@ -529,7 +529,7 @@
 				"headers": {
 					"oneOf": [
 						{ "$ref": "#/definitions/HTTPRequestHeader" },
-						{ "type": "array", "items": [{ "$ref": "#/definitions/HTTPRequestHeader" }] }
+						{ "type": "array", "items": { "$ref": "#/definitions/HTTPRequestHeader" } }
 					]
 				},
 				"rel": { "type": "string" },
@@ -654,7 +654,7 @@
 				"headers": {
 					"oneOf": [
 						{ "$ref": "#/definitions/HTTPRequestHeader" },
-						{ "type": "array", "items": [{ "$ref": "#/definitions/HTTPRequestHeader" }] }
+						{ "type": "array", "items": { "$ref": "#/definitions/HTTPRequestHeader" } }
 					]
 				},
 				"rel": { "type": "string" },
@@ -704,7 +704,7 @@
 		"WatchedProperties1N": {
 			"oneOf": [
 				{ "$ref": "#/definitions/WatchedProperty" },
-				{ "type": "array", "items": [{ "$ref": "#/definitions/WatchedProperty" }] }
+				{ "type": "array", "items": { "$ref": "#/definitions/WatchedProperty" } }
 			]
 		},
 		"WatchedProperty": {
